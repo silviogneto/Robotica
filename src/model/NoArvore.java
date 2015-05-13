@@ -1,10 +1,11 @@
 package model;
 
 public class NoArvore {
-	private NoArvore frente, esquerda, direita;
+	private NoArvore frente, esquerda, direita, pai;
 	private char ultimoMovimento;
 	
-	public NoArvore(char ultimoMovimento) {
+	public NoArvore(NoArvore pai, char ultimoMovimento) {
+		this.pai = pai;
 		this.ultimoMovimento = ultimoMovimento;
 		this.frente = null;
 		this.esquerda = null;
@@ -30,6 +31,13 @@ public class NoArvore {
 	}
 	public void setDireita(NoArvore direita) {
 		this.direita = direita;
+	}
+	
+	public NoArvore getPai() {
+		return pai;
+	}
+	public void setPai(NoArvore pai) {
+		this.pai = pai;
 	}
 	
 	public char getUltimoMovimento() {
