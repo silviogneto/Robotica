@@ -31,10 +31,15 @@ public class Mapear implements Behavior {
 			if (podeEsquerda()) {
 				Motor.A.rotate(anguloPositivo, true);
 				Motor.B.rotate(anguloNegativo);
+				
 			} else if (podeDireita()) {
 				Motor.A.rotate(anguloNegativo, true);
 				Motor.B.rotate(anguloPositivo);
+				
 			}
+		} else {
+			// aqui esta indo pra frente
+			
 		}
 		
 		Main.mapeando = false;
