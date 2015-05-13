@@ -1,10 +1,10 @@
 package model;
 
-import exec.Main;
 import lejos.nxt.ColorSensor;
 import lejos.nxt.Motor;
 import lejos.nxt.UltrasonicSensor;
 import lejos.robotics.subsumption.Behavior;
+import exec.Main;
 
 public class Mapear implements Behavior {
 
@@ -23,13 +23,18 @@ public class Mapear implements Behavior {
 
 	@Override
 	public void action() {
+		int anguloPositivo = 280;
+		int anguloNegativo = anguloPositivo * -1;
+		
 		// sonar olhando pra frente
-		if (sonic.getDistance() > 15) {
-			
-		} else {
-			Motor.C.rotate(90);
-			
-//			if ()
+		if (!podeFrente()) {
+			if (podeEsquerda()) {
+				Motor.A.rotate(anguloPositivo, true);
+				Motor.B.rotate(anguloNegativo);
+			} else if (podeDireita()) {
+				Motor.A.rotate(anguloNegativo, true);
+				Motor.B.rotate(anguloPositivo);
+			}
 		}
 		
 		Main.mapeando = false;
@@ -40,5 +45,26 @@ public class Mapear implements Behavior {
 		// TODO Auto-generated method stub
 
 	}
-
+	
+	private boolean podeEsquerda() {
+		try {
+			Motor.C.rotate(90); // gira sonar para esquerda
+			return podeFrente();			
+		} finally {
+			Motor.C.rotate(-90); // volta sonar para frente	
+		}
+	}
+	
+	private boolean podeDireita() {
+		try {
+			Motor.C.rotate(-90); // gira sonar para direita
+			return podeFrente();	
+		} finally {
+			Motor.C.rotate(90); // volta sonar para frente			
+		}
+	}
+	
+	private boolean podeFrente() {
+		return (sonic.getDistance() > 15);
+	}
 }
