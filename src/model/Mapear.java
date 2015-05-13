@@ -58,13 +58,17 @@ public class Mapear implements Behavior {
 	private boolean podeDireita() {
 		try {
 			Motor.C.rotate(-90); // gira sonar para direita
-			return podeFrente();	
+			return podeFrente(20);	
 		} finally {
 			Motor.C.rotate(90); // volta sonar para frente			
 		}
 	}
 	
 	private boolean podeFrente() {
-		return (sonic.getDistance() > 15);
+		return podeFrente(15);
+	}
+	
+	private boolean podeFrente(int distancia) {
+		return (sonic.getDistance() > distancia);
 	}
 }
