@@ -14,4 +14,8 @@ public class Arvore {
 	public void setRaiz(NoArvore raiz) {
 		this.raiz = raiz;
 	}
+	
+	public void adicionarNo(NoArvore no) {
+		//À fazer
+	}
 }
