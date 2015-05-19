@@ -1,8 +1,8 @@
 package model;
 
-import exec.Main;
 import lejos.nxt.Motor;
 import lejos.robotics.subsumption.Behavior;
+import exec.Main;
 
 public class AndarFrente implements Behavior {
 

@@ -8,6 +8,10 @@ import exec.Main;
 
 public class Mapear implements Behavior {
 
+	// variaveis da movimentacao
+	private int anguloPositivo = 280;
+	private int anguloNegativo = anguloPositivo * -1;
+	
 	private UltrasonicSensor sonic;
 	private ColorSensor color;
 	
@@ -23,32 +27,55 @@ public class Mapear implements Behavior {
 
 	@Override
 	public void action() {
-		int anguloPositivo = 280;
-		int anguloNegativo = anguloPositivo * -1;
+		
+		boolean conseguiuMovimentar;
 		
 		// sonar olhando pra frente
 		if (!podeFrente()) {
 			if (podeEsquerda()) {
-				Motor.A.rotate(anguloPositivo, true);
-				Motor.B.rotate(anguloNegativo);
-				
+				if ((conseguiuMovimentar = Main.arvore.adicionarNo('e'))) {
+					virarEsquerda();
+				}
 			} else if (podeDireita()) {
-				Motor.A.rotate(anguloNegativo, true);
-				Motor.B.rotate(anguloPositivo);
-				
+				if ((conseguiuMovimentar = Main.arvore.adicionarNo('d'))) {
+					virarDireita();
+				}
+			} else {
+				// se cair aqui tem que ir pra tras
+				conseguiuMovimentar = false;
 			}
 		} else {
 			// aqui esta indo pra frente
-			
+			conseguiuMovimentar = Main.arvore.adicionarNo('f');
 		}
 		
-		Main.mapeando = false;
+		if (conseguiuMovimentar) {
+			// validar a cor do piso pra ver se ja chegou no destino
+			
+			Main.mapeando = false;	
+		} else {
+			// se nao conseguiu movimentar tem que ir pra tras
+			char ultimoMovimento = Main.arvore.getNoAtual().getUltimoMovimento();
+			if (Main.arvore.backtrack()) {
+				// se fez o backtracking entao nao esta na raiz
+				
+				andarTras();
+				switch (ultimoMovimento) {
+				case 'e':
+					virarDireita();
+					break;
+				case 'd':
+					virarEsquerda();
+					break;
+				}	
+			} else {
+				// talvez aqui tenha que percorrer todo o mapa no menor caminho
+			}
+		}
 	}
 
 	@Override
 	public void suppress() {
-		// TODO Auto-generated method stub
-
 	}
 	
 	private boolean podeEsquerda() {
@@ -60,6 +87,11 @@ public class Mapear implements Behavior {
 		}
 	}
 	
+	private void virarEsquerda() {
+		Motor.A.rotate(anguloPositivo, true);
+		Motor.B.rotate(anguloNegativo);	
+	}
+	
 	private boolean podeDireita() {
 		try {
 			Motor.C.rotate(-90); // gira sonar para direita
@@ -69,11 +101,23 @@ public class Mapear implements Behavior {
 		}
 	}
 	
+	private void virarDireita() {
+		Motor.A.rotate(anguloNegativo, true);
+		Motor.B.rotate(anguloPositivo);
+	}
+	
 	private boolean podeFrente() {
 		return podeFrente(15);
 	}
 	
 	private boolean podeFrente(int distancia) {
 		return (sonic.getDistance() > distancia);
+	}
+	
+	private void andarTras() {
+		int andar = -750;
+		
+		Motor.A.rotate(andar, true);
+		Motor.B.rotate(andar);
 	}
 }
