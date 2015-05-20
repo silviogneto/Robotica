@@ -59,8 +59,6 @@ public class Mapear implements Behavior {
 			if (Main.arvore.backtrack()) {
 				// se fez o backtracking entao nao esta na raiz
 				
-				//ultimoMovimento = Main.arvore.getNoAtual().getUltimoMovimento(); //aaaaaaaaaa
-				
 				andarTras();
 				switch (ultimoMovimento) {
 				case 'e':
