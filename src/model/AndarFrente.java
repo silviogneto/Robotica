@@ -13,7 +13,7 @@ public class AndarFrente implements Behavior {
 
 	@Override
 	public void action() {
-		int andar = 750;
+		int andar = 940;
 		
 		Motor.A.rotate(andar, true);
 		Motor.B.rotate(andar);

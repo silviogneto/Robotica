@@ -27,6 +27,8 @@ public class Main {
 		Behavior mapear = new Mapear(sonic, color);
 		Behavior[] comportamentos = { andar, mapear };
 		
+		arvore.adicionarNo('f');
+		
 		Arbitrator arbitrator = new Arbitrator(comportamentos);
 		arbitrator.start();
 	}

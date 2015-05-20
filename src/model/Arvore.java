@@ -23,7 +23,7 @@ public class Arvore {
 
 	public boolean adicionarNo(char ultimoMovimento) {
 		// cria novo no passando qual foi o ultimo movimento
-		// e o no pai é o atual
+		// e o no pai Ã© o atual
 		NoArvore novoNo = new NoArvore(this.noAtual, ultimoMovimento);
 		
 		switch (ultimoMovimento) {
@@ -58,5 +58,27 @@ public class Arvore {
 		NoArvore noPai = this.noAtual.getPai();
 		this.noAtual = noPai;
 		return true;
+	}
+	
+	public void buscaProfundidade() {
+		Arvore arvore = new Arvore(new NoArvore(null, 'r'));
+		buscaProfundidade(arvore, raiz);
+	}
+	
+	//So comecei a fazer. Vou mudar muita coisa disso 
+	private Arvore buscaProfundidade(Arvore arvore, NoArvore no) {
+		if (no.getFrente() != null) {
+			arvore.getNoAtual().setFrente(no.getFrente());
+			buscaProfundidade(arvore, no.getFrente());
+		}
+		if (no.getEsquerda() != null) {
+			arvore.getNoAtual().setEsquerda(no.getEsquerda());
+			buscaProfundidade(arvore, no.getEsquerda());
+		}
+		if (no.getDireita() != null) {
+			arvore.getNoAtual().setDireita(no.getDireita());
+			buscaProfundidade(arvore, no.getDireita());
+		}
+		return arvore;
 	}
 }

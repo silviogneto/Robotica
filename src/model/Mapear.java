@@ -9,7 +9,7 @@ import exec.Main;
 public class Mapear implements Behavior {
 
 	// variaveis da movimentacao
-	private int anguloPositivo = 280;
+	private int anguloPositivo = -280;
 	private int anguloNegativo = anguloPositivo * -1;
 	
 	private UltrasonicSensor sonic;
@@ -31,7 +31,7 @@ public class Mapear implements Behavior {
 		boolean conseguiuMovimentar;
 		
 		// sonar olhando pra frente
-		if (!podeFrente()) {
+		if (!podeFrente('f')) {
 			if (podeEsquerda()) {
 				if ((conseguiuMovimentar = Main.arvore.adicionarNo('e'))) {
 					virarEsquerda();
@@ -59,6 +59,8 @@ public class Mapear implements Behavior {
 			if (Main.arvore.backtrack()) {
 				// se fez o backtracking entao nao esta na raiz
 				
+				//ultimoMovimento = Main.arvore.getNoAtual().getUltimoMovimento(); //aaaaaaaaaa
+				
 				andarTras();
 				switch (ultimoMovimento) {
 				case 'e':
@@ -70,6 +72,9 @@ public class Mapear implements Behavior {
 				}	
 			} else {
 				// talvez aqui tenha que percorrer todo o mapa no menor caminho
+				Main.arvore.getNoAtual().setUltimoMovimento('z'); //Chegou ao destino
+				Main.chegouObjetivo = true;
+				Main.mapeando = false;
 			}
 		}
 	}
@@ -79,9 +84,12 @@ public class Mapear implements Behavior {
 	}
 	
 	private boolean podeEsquerda() {
+		if (Main.arvore.getNoAtual().getEsquerda() != null) {
+			return false;
+		}
 		try {
 			Motor.C.rotate(90); // gira sonar para esquerda
-			return podeFrente();			
+			return podeFrente('e');			
 		} finally {
 			Motor.C.rotate(-90); // volta sonar para frente	
 		}
@@ -93,9 +101,11 @@ public class Mapear implements Behavior {
 	}
 	
 	private boolean podeDireita() {
+		if (Main.arvore.getNoAtual().getDireita() != null)
+			return false;
 		try {
 			Motor.C.rotate(-90); // gira sonar para direita
-			return podeFrente(20);	
+			return podeFrente('d', 25);	
 		} finally {
 			Motor.C.rotate(90); // volta sonar para frente			
 		}
@@ -106,16 +116,19 @@ public class Mapear implements Behavior {
 		Motor.B.rotate(anguloPositivo);
 	}
 	
-	private boolean podeFrente() {
-		return podeFrente(15);
+	private boolean podeFrente(char direcao) {
+		return podeFrente(direcao, 15);
 	}
 	
-	private boolean podeFrente(int distancia) {
-		return (sonic.getDistance() > distancia);
+	private boolean podeFrente(char direcao, int distancia) {
+		return  (Main.arvore.getNoAtual().getUltimoMovimento() != 'r')
+				&& (color.getColorID() != 1)
+				&& ((direcao != 'f') || (Main.arvore.getNoAtual().getFrente() == null)) 
+				&& (sonic.getDistance() > distancia);
 	}
 	
 	private void andarTras() {
-		int andar = -750;
+		int andar = -940;
 		
 		Motor.A.rotate(andar, true);
 		Motor.B.rotate(andar);
