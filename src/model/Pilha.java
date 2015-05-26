@@ -25,8 +25,8 @@ public class Pilha {
 	}
 	
 	
-	//O nó de cima é "frente"
-	//O nó de baixo é "pai"
+	//O no de cima eh "frente"
+	//O no de baixo eh "pai"
 	public void push(NoArvore no) {
 		no.setFrente(null);
 		no.setPai(null);
