@@ -10,8 +10,8 @@ public class TesteCor {
 		
 		while (true) {
 			try {
-				Thread.sleep(500);
-				System.out.println("............" + color.getColorID());
+				Thread.sleep(1000);
+				System.out.println("......" + color.getColorID());
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -13,8 +13,9 @@ import model.NoArvore;
 
 public class Main {
 
-	public static boolean mapeando = false;
+	public static boolean mapeando = true;
 	public static boolean chegouObjetivo = false;
+	public static boolean rodasMenorCaminho = false;
 	public static Arvore arvore = new Arvore(new NoArvore(null, 'r'));
 	
 	public static void main(String[] args) {
@@ -27,7 +28,7 @@ public class Main {
 		Behavior mapear = new Mapear(sonic, color);
 		Behavior[] comportamentos = { andar, mapear };
 		
-		arvore.adicionarNo('f');
+		//arvore.adicionarNo('f');
 		
 		Arbitrator arbitrator = new Arbitrator(comportamentos);
 		arbitrator.start();
