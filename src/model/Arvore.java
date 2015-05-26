@@ -60,25 +60,42 @@ public class Arvore {
 		return true;
 	}
 	
-	public void buscaProfundidade() {
+	public Pilha buscaCaminho() {
+		Pilha result = new Pilha();
 		Arvore arvore = new Arvore(new NoArvore(null, 'r'));
-		buscaProfundidade(arvore, raiz);
+		buscaCaminho(result, raiz);
+		return result;
 	}
 	
 	//So comecei a fazer. Vou mudar muita coisa disso 
-	private Arvore buscaProfundidade(Arvore arvore, NoArvore no) {
+	private Pilha buscaCaminho(Pilha pilha, NoArvore no) {
 		if (no.getFrente() != null) {
-			arvore.getNoAtual().setFrente(no.getFrente());
-			buscaProfundidade(arvore, no.getFrente());
+			buscaCaminho(pilha, no.getFrente());
+			if (no.getUltimoMovimento() == 'z') {
+				pilha.setAchouFim(true);
+			}
+			if (pilha.isAchouFim()) {
+				pilha.push(no);
+			}
 		}
-		if (no.getEsquerda() != null) {
-			arvore.getNoAtual().setEsquerda(no.getEsquerda());
-			buscaProfundidade(arvore, no.getEsquerda());
+		if ((no.getEsquerda() != null) && (!pilha.isAchouFim())) {
+			buscaCaminho(pilha, no.getEsquerda());
+			if (no.getUltimoMovimento() == 'z') {
+				pilha.setAchouFim(true);
+			}
+			if (pilha.isAchouFim()) {
+				pilha.push(no);
+			}
 		}
-		if (no.getDireita() != null) {
-			arvore.getNoAtual().setDireita(no.getDireita());
-			buscaProfundidade(arvore, no.getDireita());
+		if ((no.getDireita() != null) && (!pilha.isAchouFim())) {
+			buscaCaminho(pilha, no.getDireita());
+			if (no.getUltimoMovimento() == 'z') {
+				pilha.setAchouFim(true);
+			}
+			if (pilha.isAchouFim()) {
+				pilha.push(no);
+			}
 		}
-		return arvore;
+		return pilha;
 	}
 }
